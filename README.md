@@ -1,175 +1,107 @@
 # 🔐 API Security Assessment — crAPI
 
-A hands-on API security testing project focused on identifying and understanding common API security weaknesses using **crAPI (Completely Ridiculous API)** and **Burp Suite**.
+Welcome to my API Security Assessment project! 👋
 
-This repository contains testing notes, HTTP request and response screenshots, security observations, and recommendations for improving API security.
+In this project, I explored API security testing using **crAPI (Completely Ridiculous API)**, an intentionally vulnerable application designed for learning and practicing API security. I used **Burp Suite** to inspect HTTP requests and responses, explore different security testing scenarios, and document my observations with screenshots.
 
----
+My main goal was to gain hands-on experience with API security and better understand how security weaknesses can affect real-world applications.
 
-## 📌 Table of Contents
+## 📌 About the Project
 
-- [Project Overview](#-project-overview)
-- [Objectives](#-objectives)
-- [Tools and Technologies](#️-tools-and-technologies)
-- [Testing Methodology](#-testing-methodology)
-- [Security Testing Scenarios](#-security-testing-scenarios)
-- [Screenshots and Evidence](#-screenshots-and-evidence)
-- [Security Recommendations](#️-security-recommendations)
-- [Learning Outcomes](#-learning-outcomes)
-- [Scope and Responsible Testing](#️-scope-and-responsible-testing)
-- [About Me](#-about-me)
+APIs help applications communicate and exchange data. However, if they are not designed and secured properly, they may expose sensitive information or allow unauthorized access to resources.
 
----
+Through this project, I explored common API security risks, learned how to analyze application behavior, and documented the testing process with supporting evidence.
 
-## 📖 Project Overview
+This project also helped me understand why proper authorization, secure authentication, and careful handling of sensitive information are important when developing and testing APIs.
 
-APIs allow applications to exchange data and perform operations. However, improper authorization, weak authentication controls, and excessive data exposure can create security risks.
+## 🎯 Project Objectives
 
-The purpose of this project is to practice API security testing in the intentionally vulnerable crAPI lab environment. Using Burp Suite, API requests and responses are inspected to understand application behavior and investigate selected security scenarios.
-
-The project documents the testing process through screenshots and provides recommendations for strengthening API security.
-
-## 🎯 Objectives
-
-- Understand API communication through HTTP requests and responses.
-- Learn how to intercept and analyze API traffic.
-- Investigate Broken Object Level Authorization (BOLA).
-- Examine API responses for excessive data exposure.
-- Explore authentication and OTP-related security controls.
-- Understand account takeover attack scenarios.
+- Understand how APIs communicate through HTTP requests and responses.
+- Learn to intercept and analyze API traffic using Burp Suite.
+- Explore Broken Object Level Authorization (BOLA).
+- Examine API responses for potential excessive data exposure.
+- Understand OTP and authentication security controls.
+- Explore account takeover-related security scenarios.
 - Investigate Server-Side Request Forgery (SSRF).
-- Document test evidence and practical security recommendations.
+- Capture testing evidence and document security recommendations.
 
 ## 🛠️ Tools and Technologies
 
-| Tool / Technology | Purpose |
+| Tool / Technology | How I Used It |
 |---|---|
-| **crAPI** | Intentionally vulnerable application for API security practice |
-| **Burp Suite** | Intercepting, inspecting, and modifying HTTP requests and responses |
-| **HTTP / REST APIs** | Understanding API endpoints, methods, headers, and responses |
-| **Web browser** | Accessing the lab application and testing workflows |
-| **Terminal** | Supporting lab setup and command-line tasks, where applicable |
+| **crAPI** | Practiced API security testing in an intentionally vulnerable lab |
+| **Burp Suite** | Intercepted and analyzed HTTP requests and responses |
+| **HTTP / REST APIs** | Studied API endpoints, parameters, headers, and response data |
+| **Web Browser** | Accessed the application and tested its functionality |
+| **Terminal** | Supported command-line tasks where needed |
 
-## 🔬 Testing Methodology
-
-The project follows a structured API testing workflow:
-
-1. **Application exploration:** Identify relevant application features and API endpoints.
-2. **Request interception:** Capture HTTP requests using Burp Suite.
-3. **Request analysis:** Inspect methods, paths, parameters, headers, and response data.
-4. **Authorization testing:** Examine whether users can access resources they are permitted to access.
-5. **Authentication testing:** Explore OTP-related and account access workflows.
-6. **Input and request testing:** Investigate the application's handling of selected request values and destinations.
-7. **Evidence collection:** Capture relevant requests and responses for documentation.
-8. **Recommendations:** Identify appropriate security controls based on the observed behavior.
-
----
-
-## 🔍 Security Testing Scenarios
+## 🔍 What I Tested
 
 ### 1. API Request and Response Analysis
 
-**Objective:** Understand how API endpoints process requests and return data.
+I inspected API requests and their corresponding responses to understand how the application processes requests and returns information.
 
-**Testing activities:**
-- Inspect HTTP methods, endpoints, headers, and parameters.
-- Review status codes and response bodies.
-- Compare request changes with the resulting application behavior.
-
-**Security benefit:** Helps identify unusual behavior, improper validation, and potentially sensitive information in responses.
+This helped me become more familiar with HTTP methods, headers, parameters, status codes, and response bodies.
 
 ### 2. Broken Object Level Authorization (BOLA)
 
-**Objective:** Investigate whether the application properly checks access to individual resources.
+I explored how APIs handle requests involving different object identifiers and why authorization checks are important when accessing individual resources.
 
-**Testing activities:**
-- Examine requests containing resource identifiers.
-- Compare application behavior when authorized test resources are requested.
-- Determine whether server-side ownership and permission checks are enforced.
+**Why it matters:** If an API does not properly verify resource permissions, one user may be able to access another user's data.
 
-**Potential impact:** Inadequate object-level authorization can expose or allow unauthorized modification of another user's resources.
-
-**Recommendation:** Validate the authenticated user's permissions for every requested object on the server side.
+**Recommended protection:** Verify the authenticated user's permissions for every requested object on the server side.
 
 ### 3. Excessive Data Exposure
 
-**Objective:** Examine whether API responses contain more information than the client needs.
+I examined API response data to understand whether an endpoint might return more information than the client actually needs.
 
-**Testing activities:**
-- Inspect response bodies and returned fields.
-- Identify information that may not be required for the requested operation.
-- Assess whether sensitive fields are appropriately protected.
+**Why it matters:** Unnecessary information in responses can increase the risk of exposing personal or account-related data.
 
-**Potential impact:** Unnecessary information in responses can increase the risk of personal or account-related data exposure.
-
-**Recommendation:** Return only necessary fields and apply appropriate authorization and data filtering.
+**Recommended protection:** Return only the fields required for the intended operation and apply appropriate access controls.
 
 ### 4. Authorization Testing — Other Vehicle
 
-**Objective:** Examine whether resource access controls are consistently enforced across different vehicle or object identifiers.
+I explored requests involving vehicle or resource identifiers to understand how an application should enforce access restrictions across different resources.
 
-**Testing activities:**
-- Review requests involving vehicle or resource identifiers.
-- Compare responses for resources available to the test account.
-- Assess whether access restrictions are applied consistently.
+**Why it matters:** Changing an identifier should not automatically grant access to a resource belonging to another user.
 
-**Recommendation:** Enforce resource ownership and authorization checks independently of client-supplied identifiers.
+**Recommended protection:** Enforce resource ownership and authorization checks on the server side.
 
 ### 5. OTP Security Testing
 
-**Objective:** Explore OTP-related authentication controls.
+I explored an OTP-related testing scenario to better understand the security controls used during verification and authentication workflows.
 
-**Security controls to assess:**
-- OTP expiration and single-use enforcement.
-- Verification attempt limits.
-- Rate limiting against repeated requests.
-- Server-side validation of OTPs.
-- Protection against unauthorized account recovery.
+Important controls to consider include OTP expiration, single-use enforcement, verification attempt limits, and rate limiting.
 
-**Potential impact:** Weak OTP controls may increase the risk of authentication abuse or unauthorized account access.
-
-**Recommendation:** Enforce expiration, single-use codes, attempt limits, and server-side verification.
+**Recommended protection:** Use short-lived, single-use OTPs, enforce verification limits, and validate codes securely on the server.
 
 ### 6. Account Takeover Testing
 
-**Objective:** Examine an account-related attack scenario and assess the application's authentication protections.
+I examined an account-related security scenario to understand how weaknesses in authentication or account recovery could put user accounts at risk.
 
-**Security controls to assess:**
-- Account recovery validation.
-- Authentication and session handling.
-- Rate limiting and abuse detection.
-- Notifications for suspicious account activity.
+**Why it matters:** Weak account protection may allow unauthorized access if authentication controls can be bypassed.
 
-**Potential impact:** Weak account protection can allow unauthorized access if authentication or recovery controls can be bypassed.
-
-**Recommendation:** Strengthen account recovery, protect sessions, limit repeated attempts, and monitor suspicious authentication activity.
+**Recommended protection:** Strengthen account recovery, secure session management, limit repeated attempts, and monitor suspicious activity.
 
 ### 7. Server-Side Request Forgery (SSRF)
 
-**Objective:** Investigate how the application handles user-controlled URLs or server-side requests.
+I explored an SSRF-related testing scenario to understand the risks associated with applications making server-side requests based on user-controlled input.
 
-**Security controls to assess:**
-- URL and destination validation.
-- Restrictions on internal network access.
-- Protection of cloud metadata endpoints.
-- Outbound network restrictions.
-- Redirect and DNS resolution handling.
+**Why it matters:** An SSRF vulnerability may allow a server to send unintended requests to internal services or restricted destinations.
 
-**Potential impact:** An SSRF vulnerability may allow a server to make unintended requests to internal services or other restricted destinations.
+**Recommended protection:** Validate destinations, restrict outbound network access, and block requests to sensitive internal resources.
 
-**Recommendation:** Use strict destination allowlists, validate resolved IP addresses, block sensitive internal destinations, and restrict outbound connections.
+> **Note:** These sections describe the security scenarios explored in this project. Whether a vulnerability is confirmed depends on the actual test results and supporting evidence.
 
-> **Note:** These sections describe the testing scenarios and potential risks. A vulnerability should be marked as confirmed only when the collected evidence demonstrates that the security control failed.
+## 📸 Screenshots and Testing Evidence
 
----
+I included screenshots of the requests and responses observed during testing. These images help document my testing process and make the project easier to review.
 
-## 📸 Screenshots and Evidence
-
-The `evidence/` directory contains screenshots documenting the API testing process. Each image should show relevant testing activity without exposing credentials, session tokens, OTPs, or personal information.
+The screenshots are stored in the `evidence/` folder of this repository.
 
 ### 1. User Request and Response
 
-**Purpose:** Document the initial API request and the corresponding response.
+These screenshots document the initial request and its corresponding response.
 
 ![User 1 Request](evidence/01_User1_Request.png)
 
@@ -177,7 +109,7 @@ The `evidence/` directory contains screenshots documenting the API testing proce
 
 ### 2. Broken Object Level Authorization (BOLA)
 
-**Purpose:** Document requests and responses examined during object-level authorization testing.
+These screenshots document the request and response examined during object-level authorization testing.
 
 ![BOLA Request](evidence/03_BOLA_Request.png)
 
@@ -185,7 +117,7 @@ The `evidence/` directory contains screenshots documenting the API testing proce
 
 ### 3. Excessive Data Exposure
 
-**Purpose:** Record API response data reviewed for potentially unnecessary or sensitive fields.
+These screenshots show the request and response data reviewed during the data exposure testing scenario.
 
 ![Data Exposure Request](evidence/05_Data_Exposure_Request.png)
 
@@ -195,7 +127,7 @@ The `evidence/` directory contains screenshots documenting the API testing proce
 
 ### 4. Authorization Testing — Other Vehicle
 
-**Purpose:** Document the request and response associated with testing access to another vehicle or resource.
+These screenshots document the request and response associated with testing access to another vehicle or resource.
 
 ![Other Vehicle Request](evidence/08_BOLA_Other_Vehicle_Request.png)
 
@@ -203,61 +135,80 @@ The `evidence/` directory contains screenshots documenting the API testing proce
 
 ### 5. OTP Security Testing
 
-**Purpose:** Document the OTP-related test scenario and the application's observed behavior.
+This screenshot documents the OTP-related testing scenario.
 
 ![OTP Testing Evidence](evidence/10_OTP_Testing_Redacted.png)
 
 ### 6. Account Takeover Testing
 
-**Purpose:** Record evidence associated with the account security testing scenario.
+This screenshot documents the account security testing scenario.
 
 ![Account Takeover Evidence](evidence/11_Account_Takeover_Evidence.png)
 
 ### 7. Server-Side Request Forgery (SSRF)
 
-**Purpose:** Document the request and response examined during SSRF-related testing.
+These screenshots document the request and response examined during SSRF-related testing.
 
 ![SSRF Request](evidence/12_SSRF_Request.png)
 
 ![SSRF Response](evidence/13_SSRF_Response.png)
 
----
+## 🔒 Security Redactions — Protecting Sensitive Information
 
-## 🛡️ Security Recommendations
+You may notice black lines covering certain parts of some screenshots. These are **intentional security redactions**, added to hide sensitive information before sharing the evidence publicly.
 
-Based on the types of API risks investigated in this project, recommended defensive practices include:
+Depending on the screenshot, sensitive information may include:
 
-- **Authorization:** Verify resource ownership and permissions on every relevant request.
-- **Authentication:** Use secure authentication, session management, and account recovery controls.
-- **OTP protection:** Enforce expiration, single-use verification codes, and rate limits.
-- **Data minimization:** Return only the information required by the client.
-- **Input validation:** Validate untrusted input on the server side.
-- **SSRF prevention:** Restrict outbound requests and block access to sensitive internal services.
-- **Monitoring:** Log relevant security events without storing secrets or unnecessary personal data.
-- **Retesting:** Verify that security controls work correctly after remediation.
+- 🔑 Authentication or Bearer tokens
+- 🍪 Session cookies and session-related values
+- 🔐 Passwords and OTP verification codes
+- 👤 Personal or account-related information
+- 🛡️ Other confidential values that should not be publicly exposed
 
-## 📚 Learning Outcomes
+I kept the relevant testing details visible wherever possible while hiding information that could create a security or privacy risk.
 
-Through this project, I developed practical familiarity with:
+**Why is this important?**
 
-- API request and response analysis.
-- Burp Suite for intercepting and examining HTTP traffic.
-- Object-level authorization testing concepts.
-- Authentication and OTP security considerations.
-- Identifying potential excessive data exposure.
-- Understanding SSRF risks and defensive controls.
-- Organizing screenshots as security evidence.
-- Writing clear security observations and remediation recommendations.
+Security testing is not only about identifying weaknesses. It is also about handling evidence responsibly. Publishing unredacted credentials, tokens, or session data can create unnecessary risks.
+
+The black lines are therefore a deliberate part of preparing the screenshots for public documentation, not an error in the images.
+
+## 🛡️ General Security Recommendations
+
+Some important security practices highlighted by these testing scenarios include:
+
+- Implement proper authentication and authorization checks.
+- Verify resource ownership for every relevant API request.
+- Return only the data required by the client.
+- Apply rate limits to authentication and OTP verification.
+- Validate untrusted input on the server side.
+- Restrict server-side requests to approved destinations.
+- Protect credentials, tokens, cookies, and personal information.
+- Monitor suspicious activity and review security logs.
+- Retest security controls after remediation.
+
+## 📚 What I Learned
+
+Working on this project helped me improve my understanding of:
+
+- API security testing concepts.
+- Intercepting and analyzing HTTP traffic using Burp Suite.
+- Authentication and authorization weaknesses.
+- BOLA and excessive data exposure risks.
+- OTP security and account protection.
+- SSRF risks and defensive security measures.
+- Collecting and organizing security testing evidence.
+- Writing clear security observations and recommendations.
+
+I see this project as a step in my cybersecurity learning journey, and I plan to continue building practical skills through more hands-on security projects.
 
 ## ⚖️ Scope and Responsible Testing
 
-This project is intended for educational purposes and authorized testing in the crAPI lab environment.
+This project is intended for educational purposes and authorized testing within the crAPI lab environment.
 
-All testing should be limited to systems for which explicit permission has been granted. Credentials, OTPs, bearer tokens, cookies, personal information, and other sensitive data must be removed from screenshots before publication.
+All testing should be performed only on systems for which permission has been granted. Sensitive information must be removed from screenshots before public sharing.
 
-The documented scenarios should not be interpreted as confirmed vulnerabilities unless supported by the actual test results.
-
----
+The testing scenarios described here should not be treated as confirmed vulnerabilities unless the actual results support that conclusion.
 
 ## 👨‍💻 About Me
 
@@ -278,4 +229,4 @@ I'm continuously improving my cybersecurity skills by building hands-on security
 
 ---
 
-*This repository is a learning project documenting API security testing concepts, evidence, and defensive recommendations.*
+*Thanks for visiting my project! I'm always learning, improving, and exploring new areas of cybersecurity.*
